@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from collections import namedtuple
 import urllib
 
 class Page:
@@ -8,14 +9,22 @@ class Page:
         Retrieves and stores the urllib.urlopen object for a given url
         """
 
-        self.page_data = urllib.urlopen(url)
+        self.page_link = urllib.urlopen(url)
 
-    def get_table_data(self):
+    def get_metadata(self):
         """
-        Returns metadata about the tables contained in the url, such as the
-        number of tables, the number of rows, columns, and so on.
+        Returns metadata about the tables contained in the url, which includes
+        the number of tables, the number of rows, columns, and so on.
         """
-        return True
+
+        # getting the number of tables is trivial
+        # just count the number of <table> tags
+        html = self.page_link.read()
+        parsed_html = BeautifulSoup(html, "html.parser")
+        num_tables = len(parsed_html.findAll("table"))
+        print num_tables
+
+
 
     def save_tables(self, format, names=None):
         """
@@ -32,3 +41,8 @@ class Page:
         """
 
         return True
+
+if __name__ == "__main__":
+    link = "http://www.w3.org/TR/html401/struct/tables.html"
+    test = Page(link)
+    test.get_metadata()
