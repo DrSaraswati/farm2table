@@ -17,14 +17,6 @@ class Page:
         the number of tables, the number of rows, columns, and so on.
         """
 
-        # getting the number of tables is trivial
-        # just count the number of <table> tags
-        html = self.page_link.read()
-        parsed_html = BeautifulSoup(html, "html.parser")
-        num_tables = len(parsed_html.findAll("table"))
-        print num_tables
-
-
 
     def save_tables(self, format, names=None):
         """
