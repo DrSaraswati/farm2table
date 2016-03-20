@@ -6,5 +6,6 @@ class Table:
         """
         Stores infromation about a given table such as columns, heading, etc.
         """
+        
 
-    def 
+    def
