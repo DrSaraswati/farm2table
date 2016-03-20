@@ -1,12 +1,14 @@
-import urllib
 from collections import namedtuple
 from enum import Enum
+import pprint
+import json
+import csv
+import xlsxwriter
 
-class DataFormat(Enum):
-    csv = 1
-    excel = 2
-    json = 3
-    txt = 4
+class Format(Enum):
+    json = 1
+    csv = 2
+    excel = 3
 
 Metadata = namedtuple("Metadata", "num_cols num_entries")
 
@@ -37,18 +39,50 @@ class Table:
             num_entries = num_entries
         )
 
+    def show_table(self):
+        """
+        Prints a formatted table to the command line using pprint
+        """
+        pprint.pprint(self.table_data, width=1)
+
     def save_table(self, format, name):
         """
-        Saves a table to one of the given formats - csv, excel, json, and txt
+        Saves a table to one of the given formats - csv, excel, and json
         under the given file name. File name should omit the extension.
         """
-        
 
-    def display_table(self):
-        """
-        Prints a formatted table to the command line
-        """
+        # handle each case separately
 
-if __name__ == "__main__":
-    table = {"cars":["mercedes", "honda"], "fruits":["apple", "pear"]}
-    table_obj = Table(table)
+        # convert to json
+        if format.value == 1:
+            fname = name + ".json"
+
+            with open(fname, 'w') as outf:
+                json.dump(self.table_data, outf, indent=4)
+
+        # convert to csv
+        elif format.value == 2:
+            fname = name + ".csv"
+
+            with open(fname, 'wb') as outf:
+                w = csv.writer(outf)
+                w.writerow(self.table_data.keys())
+                w.writerows(zip(*self.table_data.values()))
+
+        # convert to excel
+        elif format.value == 3:
+            fname = name + ".xlsx"
+
+            workbook = xlsxwriter.Workbook(fname)
+            worksheet = workbook.add_worksheet()
+
+            col = 0
+            for key in self.table_data.keys():
+                row = 0
+                worksheet.write(row, col, key)
+                for item in self.table_data[key]:
+                    row += 1
+                    worksheet.write(row, col, item)
+                col += 1
+
+            workbook.close()
