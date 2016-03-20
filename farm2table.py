@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from collections import namedtuple
+from Table import *
 import urllib
 
 class Page:
@@ -9,16 +10,26 @@ class Page:
         Retrieves and stores the urllib.urlopen object for a given url
         """
 
-        self.page_link = urllib.urlopen(url)
+        self.link = urllib.urlopen(url)
 
-    def get_metadata(self):
+    def get_tables(self):
+        """
+        Extracts each table on the page and places it in a dictionary.
+        Converts each dictionary to a Table object. Returns a list of
+        pointers to the respective Table object(s).
+        """
+
+        raw_html = self.link.read()
+        soup = BeautifulSoup(raw_html, "html.parser")
+
+    def get_info(self):
         """
         Returns metadata about the tables contained in the url, which includes
         the number of tables, the number of rows, columns, and so on.
         """
 
 
-    def save_tables(self, format, names=None):
+    def save_tables(self, tables, format, names):
         """
         Extracts the tables from HTML and converts them to the given format
         and returns metadata about the files created
@@ -26,15 +37,8 @@ class Page:
 
         return True
 
-    def to_dictionary(self):
-        """
-        Places all tables on the page into a single dictionary and returns it.
-        Obviously not recommended if there's a lot of tables on a given page.
-        """
-
-        return True
 
 if __name__ == "__main__":
-    link = "http://www.w3.org/TR/html401/struct/tables.html"
-    test = Page(link)
-    test.get_metadata()
+    url = "https://datatables.net/examples/data_sources/dom.html"
+    page = Page(url)
+    page.get_tables()
