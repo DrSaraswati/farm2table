@@ -1,7 +1,13 @@
 from bs4 import BeautifulSoup
 from collections import namedtuple
+from enum import Enum
 from Table import *
 import urllib
+
+class Format(Enum):
+    json = 1
+    csv = 2
+    excel = 3
 
 class Page:
 
@@ -46,22 +52,27 @@ class Page:
                         row_data.append(col[k])
                     table_dict[k] = row_data
 
-            # convert to a table object and append to our final list
-            final = Table(table_dict)
-            final_tables.append(final)
+                # convert to a table object and append to our final list
+                final = Table(table_dict)
+                final_tables.append(final)
 
         return final_tables
 
-    def save_tables(self, tables, format, names):
+    def save_tables(self, tables, format):
         """
-        Extracts the tables from HTML and converts them to the given format
-        and returns metadata about the files created
+        Takes an input a list of table objects and saves each
+        to the given format, either json, csv, or excel
         """
 
-        return True
+        counter = 1
+        for table in tables:
+            name = "table" + str(counter)
+            table.save_table(format, name)
+            counter += 1
 
 
 if __name__ == "__main__":
     url = "https://computerservices.temple.edu/creating-tables-html"
     page = Page(url)
-    page.get_tables()
+    tables = page.get_tables()
+    page.save_tables(tables, Format.csv)
