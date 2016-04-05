@@ -47,4 +47,4 @@ This new argument causes the code to ignore any table with 5 entries or fewer. A
 
 ## Usage
 
-I made this library for light web scraping and easy data extraction. I am not responsible for any scripts that rely on farm2table and I am not liable for your what you choose to do with it.
+I made this library for light web scraping and easy data extraction. I am not responsible for any scripts that rely on farm2table and I am not liable for whatever you choose to do with it.
