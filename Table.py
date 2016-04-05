@@ -1,9 +1,6 @@
 from collections import namedtuple
-from enum import Enum
 import pprint
-import json
 import csv
-import xlsxwriter
 
 
 Metadata = namedtuple("Metadata", "num_cols num_entries")

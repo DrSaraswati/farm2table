@@ -1,9 +1,7 @@
 from bs4 import BeautifulSoup
 from collections import namedtuple
-from enum import Enum
 from Table import *
 import urllib
-import string
 import re
 
 class Page:
@@ -67,10 +65,3 @@ class Page:
                     name = "table" + str(counter)
                     table.save_table(name)
                     counter += 1
-
-
-if __name__ == "__main__":
-    url = "http://www.dogsofthedow.com/largest-companies-by-market-cap.htm"
-    page = Page(url)
-    tables = page.get_tables()
-    page.save_tables(tables, ignore_small=True)
