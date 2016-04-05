@@ -5,10 +5,6 @@ import json
 import csv
 import xlsxwriter
 
-class Format(Enum):
-    json = 1
-    csv = 2
-    excel = 3
 
 Metadata = namedtuple("Metadata", "num_cols num_entries")
 
@@ -45,46 +41,14 @@ class Table:
         """
         pprint.pprint(self.table_data, width=1)
 
-    def save_table(self, format, name):
+    def save_table(self, name):
         """
-        Saves a table to one of the given formats - csv, excel, and json
-        under the given file name. File name should omit the extension.
+        Saves a table to csv format under the given file name. 
+        File name should omit the extension.
         """
+        fname = name + ".csv"
 
-        # handle each case separately
-
-        # convert to json
-        if format.value == 1:
-            fname = name + ".json"
-
-            with open(fname, 'w') as outf:
-                json.dump(self.table_data, outf, indent=4)
-
-        # convert to csv
-        elif format.value == 2:
-            fname = name + ".csv"
-
-            with open(fname, 'wb') as outf:
-                w = csv.writer(outf)
-                li = self.table_data.values()
-                w.writerows(li)
-                # w.writerow(self.table_data.keys())
-                # w.writerows(zip(*self.table_data.values()))
-
-        # convert to excel
-        elif format.value == 3:
-            fname = name + ".xlsx"
-
-            workbook = xlsxwriter.Workbook(fname)
-            worksheet = workbook.add_worksheet()
-
-            col = 0
-            for key in self.table_data.keys():
-                row = 0
-                worksheet.write(row, col, key)
-                for item in self.table_data[key]:
-                    row += 1
-                    worksheet.write(row, col, item)
-                col += 1
-
-            workbook.close()
+        with open(fname, 'wb') as outf:
+            w = csv.writer(outf, dialect="excel")
+            li = self.table_data.values()
+            w.writerows(li)

@@ -3,11 +3,8 @@ from collections import namedtuple
 from enum import Enum
 from Table import *
 import urllib
-
-class Format(Enum):
-    json = 1
-    csv = 2
-    excel = 3
+import string
+import re
 
 class Page:
 
@@ -41,7 +38,12 @@ class Page:
                 value_list = []
                 entries = row.findAll("td")
                 for entry in entries:
-                    value_list.append(entry.text.strip())
+                    # fix the encoding issues with utf-8
+                    entry = entry.text.encode("utf-8", "ignore")
+                    strip_unicode = re.compile("([^-_a-zA-Z0-9!@#%&=,/'\";:~`\$\^\*\(\)\+\[\]\.\{\}\|\?\<\>\\]+|[^\s]+)")
+                    entry = strip_unicode.sub(" ", entry)
+                    value_list.append(entry)
+                # we don't want empty data packages
                 if len(value_list) > 0:
                     table_dict[count] = value_list
                     count += 1
@@ -51,21 +53,24 @@ class Page:
 
         return table_list
 
-    def save_tables(self, tables, format):
+    def save_tables(self, tables, ignore_small=False):
         """
         Takes an input a list of table objects and saves each
-        to the given format, either json, csv, or excel
+        table to csv format. If ignore_small is True,
+        we ignore any tables with 5 entries or fewer. 
         """
 
         counter = 1
         for table in tables:
-            name = "table" + str(counter)
-            table.save_table(format, name)
-            counter += 1
+            if ignore_small:
+                if table.get_metadata().num_entries > 5:
+                    name = "table" + str(counter)
+                    table.save_table(name)
+                    counter += 1
 
 
 if __name__ == "__main__":
-    url = "https://www.eia.gov/forecasts/steo/report/renew_co2.cfm"
+    url = "http://www.dogsofthedow.com/largest-companies-by-market-cap.htm"
     page = Page(url)
     tables = page.get_tables()
-    page.save_tables(tables, Format.excel)
+    page.save_tables(tables, ignore_small=True)
