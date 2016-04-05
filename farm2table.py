@@ -29,34 +29,27 @@ class Page:
         soup = BeautifulSoup(raw_html, "html.parser")
         tables = soup.findAll("table")
 
-        final_tables = []
+        # have to extract each entry using nested loops
+        table_list = []
         for table in tables:
+            # empty dictionary each time represents our table
+            table_dict = {}
             rows = table.findAll("tr")
-            col_list = []
+            # count will be the key for each list of values
+            count = 0
             for row in rows:
-                cols = row.findAll("td")
-                cols = [e.text.strip() for e in cols]
-                col_list.append(cols)
-            col_list = [c for c in col_list if len(c) > 0] # remove empties
+                value_list = []
+                entries = row.findAll("td")
+                for entry in entries:
+                    value_list.append(entry.text.strip())
+                if len(value_list) > 0:
+                    table_dict[count] = value_list
+                    count += 1
 
-            # every element in col_list must have the same length
-            # otherwise, the table is not properly formatted
+            table_obj = Table(table_dict)
+            table_list.append(table_obj)
 
-            if all(len(i) == len(col_list[0]) for i in col_list):
-                # the table is valid, we can convert it to a dict
-
-                table_dict = {}
-                for k in range(0, len(col_list[0])):
-                    row_data = []
-                    for col in col_list:
-                        row_data.append(col[k])
-                    table_dict[k] = row_data
-
-                # convert to a table object and append to our final list
-                final = Table(table_dict)
-                final_tables.append(final)
-
-        return final_tables
+        return table_list
 
     def save_tables(self, tables, format):
         """
@@ -72,7 +65,7 @@ class Page:
 
 
 if __name__ == "__main__":
-    url = "https://computerservices.temple.edu/creating-tables-html"
+    url = "https://www.eia.gov/forecasts/steo/report/renew_co2.cfm"
     page = Page(url)
     tables = page.get_tables()
-    page.save_tables(tables, Format.csv)
+    page.save_tables(tables, Format.excel)

@@ -66,8 +66,10 @@ class Table:
 
             with open(fname, 'wb') as outf:
                 w = csv.writer(outf)
-                w.writerow(self.table_data.keys())
-                w.writerows(zip(*self.table_data.values()))
+                li = self.table_data.values()
+                w.writerows(li)
+                # w.writerow(self.table_data.keys())
+                # w.writerows(zip(*self.table_data.values()))
 
         # convert to excel
         elif format.value == 3:
