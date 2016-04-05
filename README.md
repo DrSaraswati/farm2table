@@ -14,7 +14,7 @@ farm2table arose out of a need to extract HTML tables from websites without codi
 For every table on a given website (delineated by "table" tags), farm2table places it in a csv file. By default, the first table on the page ends up in table1.csv, the second ends up in table2.csv, and so on. You can change the naming system if you wish, of course.
 
 ## Examples
-The usefulness of this library becomes apparent very quickly with just a few examples:
+The usefulness of this library becomes apparent very quickly with just a few examples. I made an example script called "example.py" that you can find in the repo if you want something out of the box. 
 
 First, import farm2table and all its internal classes:
 
@@ -42,5 +42,13 @@ To save all the tables, simply call save_tables:
 page.save_tables(tables)
 ```
 
-Now look in your directory. You will see a csv file called "table1.csv" that contains the data in the url.
+Now look in your directory. You will see a csv file called "table1.csv" that contains the data in the url, exactly as it appears on their website. This is about 650 rows of data.
+
+Sometimes, certain websites will use <table> tags to structure the layout of their page, and not to display data as you might expect. Websites shouldn't do that, but some still do. If you want to ignore any of these "table fragments" that are a result of HTML tables being used for layout purposes, simply add an extra command to save_tables:
+
+```Python
+page.save_tables(tables, ignore_small=True)
+```
+
+This new argument causes the code to ignore any table with 5 entries or fewer. As a byproduct, most table fragments and layout elements are ignored. It's not perfect, but it's pretty good for now. 
 
