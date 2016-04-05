@@ -1,13 +1,6 @@
 # farm2table
 Seamlessly extract HTML tables from websites and convert them to CSV with Python.
 
-## Installation
-
-It (will) be on PyPI so you can install farm2table with:
-```
-pip install farm2table
-```
-
 ## Explanation
 farm2table arose out of a need to extract HTML tables from websites without coding up a scraper each time. With this library, you can automatically extract each table from a given website and save them to csv files without much trouble. 
 
@@ -52,3 +45,6 @@ page.save_tables(tables, ignore_small=True)
 
 This new argument causes the code to ignore any table with 5 entries or fewer. As a byproduct, most table fragments and layout elements are ignored. It's not perfect, but it's pretty good for now. 
 
+## Usage
+
+I made this library for light web scraping and easy data extraction. I am not responsible for any scripts that rely on farm2table and I am not liable for your what you choose to do with it.
