@@ -44,7 +44,7 @@ page.save_tables(tables)
 
 Now look in your directory. You will see a csv file called "table1.csv" that contains the data in the url, exactly as it appears on their website. This is about 650 rows of data.
 
-Sometimes, certain websites will use <table> tags to structure the layout of their page, and not to display data as you might expect. Websites shouldn't do that, but some still do. If you want to ignore any of these "table fragments" that are a result of HTML tables being used for layout purposes, simply add an extra command to save_tables:
+Sometimes, certain websites will use \<table\> tags to structure the layout of their page, and not to display data as you might expect. Websites shouldn't do that, but some still do. If you want to ignore any of these "table fragments" that are a result of HTML tables being used for layout purposes, simply add an extra command to save_tables:
 
 ```Python
 page.save_tables(tables, ignore_small=True)
