@@ -65,3 +65,8 @@ class Page:
                     name = "table" + str(counter)
                     table.save_table(name)
                     counter += 1
+            else:
+                name = "table" + str(counter)
+                table.save_table(name)
+                counter += 1
+
