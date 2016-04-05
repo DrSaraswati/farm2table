@@ -14,7 +14,7 @@ farm2table arose out of a need to extract HTML tables from websites without codi
 For every table on a given website (delineated by "table" tags), farm2table places it in a csv file. By default, the first table on the page ends up in table1.csv, the second ends up in table2.csv, and so on. You can change the naming system if you wish, of course.
 
 ## Examples
-The usefulness of this library becomes apparent very quickly with just a few examples. I made an example script called "example.py" that you can find in the repo if you want something out of the box. 
+The usefulness of this library becomes apparent very quickly with just a few examples. **I made an example script called "example.py" that you can find in the repo if you want something out of the box.**
 
 First, import farm2table and all its internal classes:
 
